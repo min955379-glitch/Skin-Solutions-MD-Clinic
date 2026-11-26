@@ -3,8 +3,21 @@ document.documentElement.classList.add('js');
 
 const mobileMenu = document.querySelector('.mobile-menu');
 if (mobileMenu) {
+  const menuToggle = mobileMenu.querySelector('summary');
+  mobileMenu.addEventListener('toggle', () => {
+    menuToggle.setAttribute('aria-label', mobileMenu.open ? 'Close navigation menu' : 'Open navigation menu');
+  });
   mobileMenu.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => mobileMenu.removeAttribute('open'));
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && mobileMenu.open) {
+      mobileMenu.removeAttribute('open');
+      menuToggle.focus();
+    }
+  });
+  document.addEventListener('click', (event) => {
+    if (mobileMenu.open && !mobileMenu.contains(event.target)) mobileMenu.removeAttribute('open');
   });
 }
 
